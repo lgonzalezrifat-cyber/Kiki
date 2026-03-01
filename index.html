@@ -40,27 +40,24 @@
             width: 90%;
             max-width: 600px;
             z-index: 2;
-            transition: all 0.5s ease;
-            border: 2px solid transparent;
+            transition: border 0.5s ease;
         }
         .img-frame {
             position: relative;
-            width: 300px;
-            height: 380px;
+            width: 320px;
+            height: 400px;
             margin: 0 auto 20px auto;
             border: 8px solid #ffdf00;
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 0 20px rgba(255, 223, 0, 0.5);
             transition: all 0.5s ease;
-            background: #222;
         }
         .profile-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: opacity 0.8s ease-in-out;
-            opacity: 1;
+            transition: opacity 0.5s ease;
         }
         #quote-container {
             min-height: 80px;
@@ -69,11 +66,10 @@
             align-items: center;
         }
         .quote-text {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 800;
             text-transform: uppercase;
             text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
-            margin: 0;
         }
         #start-btn {
             background: white;
@@ -85,11 +81,10 @@
             border-radius: 50px;
             cursor: pointer;
             box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
-            transition: transform 0.2s;
         }
-        #start-btn:active { transform: scale(0.95); }
         .hidden { display: none; }
 
+        /* Botón de unmute (volumen) */
         #unmute-btn {
             position: fixed;
             bottom: 20px;
@@ -98,36 +93,42 @@
             background: rgba(0,0,0,0.6);
             color: white;
             border: none;
-            padding: 15px;
-            font-size: 1.5rem;
+            padding: 20px 24px;
+            font-size: 2rem;
             border-radius: 50%;
             cursor: pointer;
-            backdrop-filter: blur(5px);
+            box-shadow: 0 0 15px rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+        }
+        #unmute-btn:hover {
+            background: rgba(0,0,0,0.8);
+            transform: scale(1.1);
         }
     </style>
 </head>
 <body>
+    <!-- Video La Promesa como fondo -->
     <video id="bg-video" autoplay loop muted playsinline>
         <source src="Melendi - La promesa.mp4" type="video/mp4">
+        Tu navegador no soporta el elemento de video.
     </video>
 
+    <!-- Botón para activar/desactivar sonido -->
     <button id="unmute-btn">🔇</button>
 
     <div class="monitor-container" id="main-box">
-        <button id="start-btn" onclick="iniciarCollage()">VER COLLAGE DE YAMILET</button>
+        <button id="start-btn">VER COLLAGE DE YAMILET</button>
        
         <div id="content" class="hidden">
             <div class="img-frame" id="frame">
-                <img id="slideshow" src="19958.jpg" alt="Yamilet" class="profile-img">
+                <img id="slideshow" src="19958.jpg" alt="Yamilet Rifat" class="profile-img">
             </div>
-            <div id="quote-container">
-                <h1 class="quote-text" id="texto-frase">¡BIENVENIDA!</h1>
-            </div>
+           
+            <div id="quote-container"></div>
         </div>
     </div>
 
     <script>
-        // Lista exacta basada en tus archivos de GitHub
         const photos = ["19958.jpg", "19951.jpg", "19962.jpg", "19935.jpg", "19947.jpg", "19943.jpg", "1230.jpg"];
         const quotes = [
             "¡YAMILET, REINA DE SU DESTINO!",
@@ -139,59 +140,56 @@
         ];
         const colors = ['#ff4d4d', '#4dff4d', '#ffdf00', '#ff4dff', '#4dd2ff', '#ffffff'];
        
-        let photoIndex = 0;
-        let quoteIndex = 0;
-        let intervalo;
-
-        const video = document.getElementById('bg-video');
-        const unmuteBtn = document.getElementById('unmute-btn');
+        const startBtn = document.getElementById('start-btn');
+        const content = document.getElementById('content');
         const imgElement = document.getElementById('slideshow');
-        const textoFrase = document.getElementById('texto-frase');
         const frame = document.getElementById('frame');
         const mainBox = document.getElementById('main-box');
+        const quoteContainer = document.getElementById('quote-container');
+        const unmuteBtn = document.getElementById('unmute-btn');
+        const video = document.getElementById('bg-video');
 
-        // Sonido
+        let photoIndex = 0;
+        let quoteIndex = 0;
+
+        // Control del sonido
         unmuteBtn.addEventListener('click', () => {
-            video.muted = !video.muted;
-            unmuteBtn.textContent = video.muted ? '🔇' : '🔊';
+            if (video.muted) {
+                video.muted = false;
+                unmuteBtn.textContent = '🔊';
+            } else {
+                video.muted = true;
+                unmuteBtn.textContent = '🔇';
+            }
         });
 
-        function iniciarCollage() {
-            document.getElementById('start-btn').classList.add('hidden');
-            document.getElementById('content').classList.remove('hidden');
-            
-            // Iniciar ciclo
-            cambiarContenido();
-            intervalo = setInterval(cambiarContenido, 3500);
-        }
+        // Iniciar el collage al presionar el botón principal
+        startBtn.addEventListener('click', () => {
+            startBtn.classList.add('hidden');
+            content.classList.remove('hidden');
+            updateGallery();
+        });
 
-        function cambiarContenido() {
-            const colorAleatorio = colors[Math.floor(Math.random() * colors.length)];
-            
-            // Efecto de desvanecimiento
+        function updateGallery() {
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+           
+            frame.style.borderColor = randomColor;
+            frame.style.boxShadow = `0 0 40px ${randomColor}`;
+            mainBox.style.border = `1px solid ${randomColor}`;
             imgElement.style.opacity = 0;
-            
+           
             setTimeout(() => {
-                // Cambiar imagen y texto
                 imgElement.src = photos[photoIndex];
-                textoFrase.textContent = quotes[quoteIndex];
-                textoFrase.style.color = colorAleatorio;
-                
-                // Cambiar bordes y luces
-                frame.style.borderColor = colorAleatorio;
-                frame.style.boxShadow = `0 0 30px ${colorAleatorio}`;
-                mainBox.style.borderColor = colorAleatorio;
-
-                // Mostrar de nuevo
                 imgElement.style.opacity = 1;
-
-                // Avanzar índices
+               
+                quoteContainer.innerHTML = `<h1 class="quote-text" style="color: ${randomColor}">${quotes[quoteIndex]}</h1>`;
+               
                 photoIndex = (photoIndex + 1) % photos.length;
                 quoteIndex = (quoteIndex + 1) % quotes.length;
-            }, 800);
+            }, 500);
+
+            setTimeout(updateGallery, 3500);
         }
     </script>
 </body>
 </html>
-
-
