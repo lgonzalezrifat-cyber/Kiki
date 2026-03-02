@@ -10,7 +10,7 @@
             padding: 0;
             overflow: hidden;
             background: #000;
-            color: red;
+            color: white;
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -156,10 +156,10 @@
         unmuteBtn.addEventListener('click', () => {
             if (video.muted) {
                 video.muted = false;
-                unmuteBtn.textContent = '🐶';
+                unmuteBtn.textContent = '🔊';
             } else {
                 video.muted = true;
-                unmuteBtn.textContent = '🐱';
+                unmuteBtn.textContent = '🔇';
             }
         });
 
@@ -193,5 +193,6 @@
     </script>
 </body>
 </html>
+
 
 
