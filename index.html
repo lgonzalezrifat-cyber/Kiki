@@ -107,7 +107,7 @@
     </style>
 </head>
 <body>
-    <!-- Video La Promesa como fondo -->i
+    <!-- Video La Promesa como fondo -->
     <video id="bg-video" autoplay loop muted playsinline>
         <source src="Melendi - La promesa.mp4" type="video/mp4">
         Tu navegador no soporta el elemento de video.
@@ -162,59 +162,36 @@
                 unmuteBtn.textContent = '🐱';
             }
         });
-         );
-        // ... (el resto del código igual hasta aquí)
 
-startBtn.addEventListener('click', () => {
-    startBtn.classList.add('hidden');
-    content.classList.remove('hidden');
-    
-    // Mostramos la primera imagen de inmediato
-    updateGallery();
-    
-    // Y luego cada 2 segundos cambiamos
-    setInterval(updateGallery, 2000);
-});
+        // Iniciar el collage al presionar el botón principal
+        startBtn.addEventListener('click', () => {
+            startBtn.classList.add('hidden');
+            content.classList.remove('hidden');
+            updateGallery();
+        });
 
-// Quitamos el setTimeout recursivo y usamos setInterval (más estable para ritmos rápidos)
+        function updateGallery() {
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+           
+            frame.style.borderColor = randomColor;
+            frame.style.boxShadow = `0 0 40px ${randomColor}`;
+            mainBox.style.border = `1px solid ${randomColor}`;
+            imgElement.style.opacity = 0;
+           
+            setTimeout(() => {
+                imgElement.src = photos[photoIndex];
+                imgElement.style.opacity = 1;
+               
+                quoteContainer.innerHTML = `<h1 class="quote-text" style="color: ${randomColor}">${quotes[quoteIndex]}</h1>`;
+               
+                photoIndex = (photoIndex + 1) % photos.length;
+                quoteIndex = (quoteIndex + 1) % quotes.length;
+            }, 500);
 
-function updateGallery() {
-    const randomColor = colors[Math.floor(Math.random() * colors.length)];
-    
-    frame.style.borderColor = randomColor;
-    frame.style.boxShadow = `0 0 40px ${randomColor}80`; // un poco más suave el glow
-    mainBox.style.border = `2px solid ${randomColor}`;
-    
-    imgElement.style.opacity = 0;
-    
-    setTimeout(() => {
-        imgElement.src = photos[photoIndex];
-        imgElement.style.opacity = 1;
-        
-        quoteContainer.innerHTML = `<h1 class="quote-text" style="color: \( {randomColor}"> \){quotes[quoteIndex]}</h1>`;
-        
-        photoIndex = (photoIndex + 1) % photos.length;
-        quoteIndex = (quoteIndex + 1) % quotes.length;
-    }, 400); // fade más corto para que se sienta dinámico
-}
-        });          
+            setTimeout(updateGallery, 3500);
         }
-        
-        quoteContainer.innerHTML = `<h1 class="quote-text" style="color: ${randomColor}">${quotes[quoteIndex]}</h1>`;
-
-        // 3. Actualizamos los índices para la PRÓXIMA vuelta
-        photoIndex = (photoIndex + 1) % photos.length;
-        quoteIndex = (quoteIndex + 1) % quotes.length;
-    }, 500);
-
-    // 4. Programamos la siguiente ejecución (fuera del timeout de 500ms)
-    // Usamos 3000ms para dar tiempo a que la imagen se vea antes de volver a ocultarse
-    setTimeout(updateGallery, 3000); 
-}
-
     </script>
 </body>
 </html>
-
 
 
