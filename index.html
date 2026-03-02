@@ -107,7 +107,7 @@
     </style>
 </head>
 <body>
-    <!-- Video La Promesa como fondo -->
+    <!-- Video La Promesa como fondo -->i
     <video id="bg-video" autoplay loop muted playsinline>
         <source src="Melendi - La promesa.mp4" type="video/mp4">
         Tu navegador no soporta el elemento de video.
@@ -168,29 +168,36 @@
             startBtn.classList.add('hidden');
             content.classList.remove('hidden');
             updateGallery();
-        });
-
-        function updateGallery() {
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-           
-            frame.style.borderColor = randomColor;
-            frame.style.boxShadow = `0 0 40px ${randomColor}`;
-            mainBox.style.border = `1px solid ${randomColor}`;
-            imgElement.style.opacity = 0;
-           
-            setTimeout((2000) => {
-                imgElement.src = photos[photoIndex];
-                imgElement.style.opacity = 1;
-               
-                quoteContainer.innerHTML = `<h1 class="quote-text" style="color: ${randomColor}">${quotes[quoteIndex]}</h1>`;
-               
-                photoIndex = (photoIndex + 1) % photos.length;
-                quoteIndex = (quoteIndex + 1) % quotes.length;
-            }, 500);
-
-            setTimeout(updateGallery, 3500);
+        });          
         }
+        function updateGallery() {
+    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+
+    // 1. Aplicamos efectos visuales de transición
+    frame.style.borderColor = randomColor;
+    frame.style.boxShadow = `0 0 40px ${randomColor}`;
+    mainBox.style.border = `1px solid ${randomColor}`;
+    imgElement.style.opacity = 0; // Desvanecemos la imagen actual
+
+    // 2. Esperamos a que la imagen sea invisible para cambiarla
+    setTimeout(() => {
+        imgElement.src = photos[photoIndex];
+        imgElement.style.opacity = 1; // Aparecemos la nueva imagen
+
+        quoteContainer.innerHTML = `<h1 class="quote-text" style="color: ${randomColor}">${quotes[quoteIndex]}</h1>`;
+
+        // 3. Actualizamos los índices para la PRÓXIMA vuelta
+        photoIndex = (photoIndex + 1) % photos.length;
+        quoteIndex = (quoteIndex + 1) % quotes.length;
+    }, 500);
+
+    // 4. Programamos la siguiente ejecución (fuera del timeout de 500ms)
+    // Usamos 3000ms para dar tiempo a que la imagen se vea antes de volver a ocultarse
+    setTimeout(updateGallery, 3000); 
+}
+
     </script>
 </body>
 </html>
+
 
