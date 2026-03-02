@@ -10,7 +10,7 @@
             padding: 0;
             overflow: hidden;
             background: #000;
-            color: white;
+            color: red;
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -156,10 +156,10 @@
         unmuteBtn.addEventListener('click', () => {
             if (video.muted) {
                 video.muted = false;
-                unmuteBtn.textContent = '🔊';
+                unmuteBtn.textContent = '🐶';
             } else {
                 video.muted = true;
-                unmuteBtn.textContent = '🔇';
+                unmuteBtn.textContent = '🐱';
             }
         });
 
@@ -178,7 +178,7 @@
             mainBox.style.border = `1px solid ${randomColor}`;
             imgElement.style.opacity = 0;
            
-            setTimeout(() => {
+            setTimeout((2000) => {
                 imgElement.src = photos[photoIndex];
                 imgElement.style.opacity = 1;
                
@@ -193,3 +193,4 @@
     </script>
 </body>
 </html>
+
